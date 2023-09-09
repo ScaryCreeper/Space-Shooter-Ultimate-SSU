@@ -39,6 +39,12 @@ public class Player : MonoBehaviour
     private AudioClip _laserSFX;
     [SerializeField]
     private AudioSource _audioSource;
+    [SerializeField]
+    private AudioSource _audioSourceExplosion;
+    [SerializeField]
+    private AudioClip explosionSFX;
+    [SerializeField]
+    private GameObject thruster;
 
     // Start is called before the first frame update
     void Start()
@@ -48,8 +54,11 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _audioSourceExplosion = GetComponent<AudioSource>();
         _rightThruster.SetActive(false);
         _leftThruster.SetActive(false);
+        thruster.SetActive(true);
+        this.gameObject.SetActive(true);
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL.");
@@ -159,7 +168,14 @@ public class Player : MonoBehaviour
         
         if(_lives < 1)
         {
-            Destroy(this.gameObject);
+            _audioSourceExplosion.clip = explosionSFX;
+            _audioSourceExplosion.Play();
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            _rightThruster.SetActive(false);
+            _leftThruster.SetActive(false);
+            thruster.SetActive(false);
+            Debug.Log("explosion marche");
+            Destroy(this.gameObject,2);
             //UIManager uIManager = GetComponent<UIManager>();
             _spawnManager.OnPlayerDeath();
             

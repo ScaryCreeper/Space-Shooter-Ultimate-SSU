@@ -13,12 +13,17 @@ public class Enemy : MonoBehaviour
     private GameObject _laser;
     private Player _player;
     private Animator _animator;
+    [SerializeField]
+    private AudioSource _audioSourceExplosion;
+    [SerializeField]
+    private AudioClip explosionSFX;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        _player = GameObject.Find("Player").GetComponent<Player>();                 
         if (_player == null )
         {
             Debug.Log("player is null");
@@ -43,6 +48,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        _audioSourceExplosion.clip = explosionSFX;
         
         if (other.tag == "Player")
         {
@@ -51,6 +57,8 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
+            _audioSourceExplosion.Play();
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
             _animator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             Destroy(this.gameObject, 2.6f);
@@ -62,6 +70,8 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddToScore(10);
             }
+            _audioSourceExplosion.Play();
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
             _animator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             Destroy(this.gameObject, 2.6f);

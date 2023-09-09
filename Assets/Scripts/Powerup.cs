@@ -8,13 +8,17 @@ public class Powerup : MonoBehaviour
     private float _speed = 3f;
     [SerializeField]
     private int _powerupID;
+    [SerializeField]
+    private AudioSource _audioSourcePickUp;
+    [SerializeField]
+    private AudioClip _audioClipPickUp;
     
   
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     // Update is called once per frame
@@ -50,7 +54,11 @@ public class Powerup : MonoBehaviour
                 }
 
             }
-            Object.Destroy(this.gameObject);
+            _audioSourcePickUp.clip = _audioClipPickUp;
+            _audioSourcePickUp.Play();
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            _speed = 0;
+            Object.Destroy(this.gameObject,1f);
         }
     }
 

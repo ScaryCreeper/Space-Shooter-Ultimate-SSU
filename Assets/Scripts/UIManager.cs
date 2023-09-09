@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -70,7 +67,6 @@ public class UIManager : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("ca marche");
             _gameOverText.gameObject.SetActive(true);
             _restartLevel.gameObject.SetActive(true);    
             yield return new WaitForSeconds(0.4f);
